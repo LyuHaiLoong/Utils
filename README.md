@@ -8,7 +8,7 @@
 > ### requestAnimation
 
 - 根据requestAnimationFrame封装的动画方法
-- 支持width、height、position属性、opacity的涉及数值改变的动画
+- 支持width、height、position属性、opacity等涉及数值改变的运动
 - 不支持transform
 
 > ### addChild
