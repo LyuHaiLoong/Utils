@@ -55,7 +55,7 @@ function addChild(obj) {
                 const target = document.createElement(node);
                 target.className = className;
                 target.innerHTML = html;
-                fragment.appendChild(target);
+                fragment.append(target);
                 //添加子节点到数组，用于返回值
                 result.children[i][j] = target;
             }
@@ -70,7 +70,7 @@ function addChild(obj) {
             const target = document.createElement(node);
             target.className = className;
             target.innerHTML = html;
-            fragment.appendChild(target);
+            fragment.append(target);
             //添加子节点，用于返回值
             result.children[i] = target;
         }
