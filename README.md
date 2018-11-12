@@ -6,13 +6,13 @@
 **不定时更新**
 
 
-> ### requestAnimation
+> ### [requestAnimation](https://github.com/LyuHaiLoong/Utils/blob/master/requestAnimation.js)
 
 - 根据requestAnimationFrame封装的动画方法
 - 支持width、height、position属性、opacity等涉及数值改变的运动
 - 不支持transform
 
-> ### addChild
+> ### [addChild](https://github.com/LyuHaiLoong/Utils/blob/master/addChild.js)
 
 - 根据appendChild封装的末尾添加节点方法
 - 支持单节点或多节点同时添加
