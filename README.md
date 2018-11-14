@@ -17,3 +17,9 @@
 - 根据appendChild封装的末尾添加节点方法
 - 支持单节点或多节点同时添加
 - 仅能添加className，添加其他属性值需调用返回值
+
+> ### [debounce](https://github.com/LyuHaiLoong/Utils/blob/master/debounce.js)
+- UNDERSCORE.JS内封装的函数防抖方法
+
+> ### [throttle](https://github.com/LyuHaiLoong/Utils/blob/master/throttle.js)
+- UNDERSCORE.JS内封装的函数节流方法
