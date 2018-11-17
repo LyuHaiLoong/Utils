@@ -17,7 +17,7 @@ function throttle(func, wait, options) {
     //间隔调用程序
     const later = function() {
         //如果options的leading参数为false，则对照时间戳为0，否则为当前时间
-        previous = options.leading === false ? 0 : +new Date();
+        previous = options.leading === false ? 0 : new Date();
         //定时器重置为null
         timeout = null;
         //在当前上下文中执行func函数，并传入当前参数值。保存函数返回值为result
@@ -29,7 +29,7 @@ function throttle(func, wait, options) {
     //返回function函数，闭包
     return function() {
         //保存当前时间戳
-        const now = +new Date();
+        const now = new Date();
         //如果对照时间戳为0，并且options的leading为false，即不会立即调用函数时。对照时间戳与now相等，用于接下来的剩余时间计算。
         if (!previous && options.leading === false) previous = now;
         // 计算剩余时间，输入的延迟时间wait - (当前时间 - 上一次调用时的对照时间)
