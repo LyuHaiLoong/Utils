@@ -3,7 +3,7 @@
 // x: 目标DOM元素属性，必须为字符串。不是字符串的话，直接返回x参数本身（可用于其他封装其他函数时的参数判断 ，如果参数本身已经是节点，不执行查找操作）
 // y: 默认为document全局查找，可传入DOM节点或字符串，若传入字符串则先执行一遍查找y
 function find(x,y = document) { // y默认参数为document
-    // 第一个参数x必须为字符串，不是字符串则报错
+    // 第一个参数x必须为字符串，返回参数本身
     if (typeof x !== "string") return x; 
     // 如果y传入的是字符串，那么就先查找y节点
     if (typeof y === "string") y = find(y);
