@@ -23,3 +23,7 @@
 
 > ### [throttle](https://github.com/LyuHaiLoong/Utils/blob/master/throttle.js)
 - UNDERSCORE.JS内封装的函数节流方法
+
+> ### [find](https://github.com/LyuHaiLoong/Utils/blob/master/find.js)
+- DOM节点查找
+- 支持ID、calssName、tagName、name查找
