@@ -27,7 +27,7 @@
 - UNDERSCORE.JS内封装的函数节流方法
 
 > ### [find](https://github.com/LyuHaiLoong/Utils/blob/master/find.js)
-- DOM节点查找
+- DOM节点查找方法
 - 支持ID、calssName、tagName、name查找
 
 > ### [renderTree](https://github.com/LyuHaiLoong/Utils/blob/master/renderTree.js)
