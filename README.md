@@ -29,3 +29,7 @@
 > ### [find](https://github.com/LyuHaiLoong/Utils/blob/master/find.js)
 - DOM节点查找
 - 支持ID、calssName、tagName、name查找
+
+> ### [renderTree](https://github.com/LyuHaiLoong/Utils/blob/master/renderTree.js)
+- 无限极菜单树生成方法
+- 因为数据结构各有不同，需要根据实际数据情况酌情调改。目前只支持[{}]数组-对象类型结构，对象键值对2对
