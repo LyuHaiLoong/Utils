@@ -34,7 +34,7 @@ function find(x, y = document) { // y默认参数为document
 // 2）丰富查找功能，第二个参数支持节点集合。可以在多个节点下查找目标元素，返回结果相互独立的数组。返回结果不是原生节点集合数据类型
 // 3）增加可选参数index，用于参数y。如果参数y为节点集合，作为索引值选择集合中的单独节点
 
-function find(x, y = document, index) {
+function find(x, y = document, i) {
 	//————————判断x的类型————————
 	// 判断x是否为元素节点。是则直接返回
 	if (x.nodeType === 1) return x;
@@ -48,12 +48,12 @@ function find(x, y = document, index) {
 		// 字符串
 		if (flag === y) {
 			y = this.find(y); // 查找y，并重新赋值
-			x = this.find(x, y, index); // 递归重新判断y，并将结果赋值给x（赋值给其他变量也行，如新声明个变量） 
+			x = this.find(x, y, i); // 递归重新判断y，并将结果赋值给x（赋值给其他变量也行，如新声明个变量） 
 			return x;
 		}
 		// HTMLCollection节点集合
 		else if (flag === "[object HTMLCollection]") {
-			if (index !== undefined) y = y[index]; // 如果传入了index参数，就在集合中查找目标，并给y重新赋值
+			if (i !== undefined) y = y[i]; // 如果传入了index参数，就在集合中查找目标，并给y重新赋值
 			else {
 				const HTMLCollectionArray = []; // 因为HTMLCollection无法合并，所以创建个空数组，用于存放查找到的每个HTMLCollection集合
 				if (y.length) { // 如果不是空集合，就循环递归查找
@@ -66,7 +66,7 @@ function find(x, y = document, index) {
 		}
 		// NodeList节点集合
 		else if (flag === "[object NodeList]") {
-			if (index !== undefined) y = y[index]; // 如果传入了index参数，就在集合中查找目标，并给y重新赋值    	
+			if (i !== undefined) y = y[i]; // 如果传入了index参数，就在集合中查找目标，并给y重新赋值    	
 			else {
 				const NodeListArray = []; // NodeList同HTMLCollection无法合并，所以创建个空数组，用于存放查找到的每个NodeList集合
 				if (y.length) { // 如果不是空集合，就循环递归查找
