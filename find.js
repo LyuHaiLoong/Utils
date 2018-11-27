@@ -37,7 +37,7 @@ function find(x, y = document) { // y默认参数为document
 function find(x, y = document, i) {
 	//————————判断x的类型————————
 	// 判断x是否为元素节点。是则直接返回
-	if (x.nodeType === 1) return x;
+	if (/^\[object (HTMLCollection|NodeList|HTML.+Element)\]$/.test(x.toString())) return x;
 	// 如果x不是元素节点，也不是字符串，就报错
 	if (typeof x !== "string") throw new Error("Invalid parameter 1.");
 
