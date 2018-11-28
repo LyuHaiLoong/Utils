@@ -15,10 +15,8 @@
 function renderTree(data,f,s,a,b,m,n,x = "ul",y = "li") { 
     // 创建父节点
     let temp = a ? `<${x} class="${a}">` : `<${x}>`;
-    const parent = temp; //保存父元素头
-    // 判断data类型
-    // 数组
-    for (let val of data) {
+    // data类型为数组-对象结构，所以可以通过forEach，此处可修改
+    data.forEach((val) => {
         if (val[s]) {
             if (b) { // 子节点有class 
                 if (m) { // 有符号插入
@@ -49,7 +47,7 @@ function renderTree(data,f,s,a,b,m,n,x = "ul",y = "li") {
                 temp += `<${y}>${val[f]}</${y}>`;
             }    
         }            
-    }
+    });
 
     temp += `</${x}>`;
 
