@@ -125,3 +125,99 @@ function find(x, y = document, i) {
 	//————————返回结果x————————
 	return x;
 }
+
+
+// version 1.3
+//**********更新内容**********
+// 1）增加对参数x的判断，通过输入数组形式的参数x，支持在同一y节点下查找不同x，或在不同y下查找不同x，或在不同y下查找同一x
+
+function find(x,y = document,i) {
+	if (/^\[object (HTMLCollection|NodeList|HTML.+Element)\]$/.test(x.toString())) return x;
+	if (typeof x !== "string") {
+		if (x instanceof Array) {
+			const DOMXArray = [];
+			if (y instanceof Array) {
+				for (let j = 0;j < x.length;j++) {
+					DOMXArray[i] = this.find(x[j],y[j],i); // 还没执行到i判断，所以递归时把i也传参
+				}
+			}
+			else {
+				for (let j = 0;j < x.length;j++) {
+					DOMXArray[i] = this.find(x[j],y,i);
+				}
+			}
+			return DOMXArray;
+		}
+		else throw new Error("Invalid parameter 1.");
+	}
+	if (y instanceof Array) {
+		if (i !== undefined) {
+			y = y[i];
+			x = this.find(x,y[i]);
+			return x;
+		}
+		else {
+			if (y.length) {
+				const DOMYArray = [];
+				for (let i = 0;i < y.length;i++) { 
+					const _y = this.find(y[i]); // for动态循环，每次循环都重新获取y的length值。改为_y
+					DOMArray[i] = this.find(x,_y);
+				}
+				return DOMArray;	
+			}
+			else throw new Error("Invalid parameter 2.")
+		}
+	}
+	const flag = y.toString();
+	if (flag === y) {
+		if(i !== undefined) y = this.find(y)[i];
+		else {
+			y = this.find(y);
+			x = this.find(x,y);
+			return x;
+		}
+	}
+	else if (flag === "[object HTMLCollection]") {
+		if (i !== undefined) y = y[i];
+		else {
+			if (y.length) {
+				const HTMLCollectionArray = [];
+				for (let i = 0;i < y.length;i++) { // 这种循环写法，运行时间相对更稳定，平均用时更短，性能较好
+					// if (!y[i].nodeType) continue; //如果用for-in写的话，HTMLCollection的length会被枚举，同理NodeList也一样。
+					// for-of不会枚举length
+					HTMLCollectionArray[i] = this.find(x,y[i]);
+				}
+				return HTMLCollectionArray;
+			}
+			else throw new Error("The target node has no parentNode.");
+		}
+	}
+	else if (flag === "[object NodeList]") {
+		if (i !== undefined) y = y[i];
+		else {
+			if (y.length) {
+				const NodeListArray = [];
+				for (let i = 0;i < y.length;i++) {
+					NodeListArray[i] = this.find(x,y[i])
+				}
+				return NodeListArray;
+			}
+			else throw new Error("The target node has no parentNode.");
+		}
+	}
+
+	x.replace(/([#.]?)(.+)/,($0,$1,$2)=>{
+		switch($1){
+			case "#":
+				x = y.querySelector($0);
+			break;
+			case ".":
+				x = y.getElementsByClassName($2);
+			break;
+			default:
+				x = y.getElementsByTagName($2).length ? y.getElementsByTagName($2) : y.getElementsByName($2);
+		}
+	})
+
+	return x;
+}
