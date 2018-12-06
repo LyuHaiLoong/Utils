@@ -33,3 +33,9 @@
 > ### [renderTree](https://github.com/LyuHaiLoong/Utils/blob/master/renderTree.js)
 - 无限极菜单树生成方法
 - 因为数据结构各有不同，需要根据实际数据情况酌情调改。目前只支持[{}]数组-对象类型结构，对象键值对2对
+
+> ### [changeStyle](https://github.com/LyuHaiLoong/Utils/blob/master/changeStyle.js)
+- 改变DOM节点style属性方法
+- 与find.js关联，可自行修改
+- 支持多节点、多属性同时赋值
+- 支持直接赋值或在当前值基础上叠加
