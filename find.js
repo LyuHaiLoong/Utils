@@ -131,89 +131,81 @@ function find(x, y = document, i) {
 //**********更新内容**********
 // 1）增加对参数x的判断，通过输入数组形式的参数x，支持在同一y节点下查找不同x，或在不同y下查找不同x，或在不同y下查找同一x
 
-function find(x,y = document,i) {
+function find(x, y = document, i) {
 	if (/^\[object (HTMLCollection|NodeList|HTML.+Element)\]$/.test(x.toString())) return x;
 	if (typeof x !== "string") {
 		if (x instanceof Array) {
 			const DOMXArray = [];
 			if (y instanceof Array) {
-				for (let j = 0;j < x.length;j++) {
-					DOMXArray[i] = this.find(x[j],y[j],i); // 还没执行到i判断，所以递归时把i也传参
+				for (let j = 0; j < x.length; j++) {
+					DOMXArray[i] = this.find(x[j], y[j], i); // 还没执行到i判断，所以递归时把i也传参
 				}
-			}
-			else {
-				for (let j = 0;j < x.length;j++) {
-					DOMXArray[i] = this.find(x[j],y,i);
+			} else {
+				for (let j = 0; j < x.length; j++) {
+					DOMXArray[i] = this.find(x[j], y, i);
 				}
 			}
 			return DOMXArray;
-		}
-		else throw new Error("Invalid parameter 1.");
+		} else throw new Error("Invalid parameter 1.");
 	}
 	if (y instanceof Array) {
 		if (i !== undefined) {
 			y = y[i];
-			x = this.find(x,y[i]);
+			x = this.find(x, y[i]);
 			return x;
-		}
-		else {
+		} else {
 			if (y.length) {
 				const DOMYArray = [];
-				for (let i = 0;i < y.length;i++) { 
+				for (let i = 0; i < y.length; i++) {
 					const _y = this.find(y[i]); // for动态循环，每次循环都重新获取y的length值。改为_y
-					DOMArray[i] = this.find(x,_y);
+					DOMArray[i] = this.find(x, _y);
 				}
-				return DOMArray;	
-			}
-			else throw new Error("Invalid parameter 2.")
+				return DOMArray;
+			} else throw new Error("Invalid parameter 2.")
 		}
 	}
 	const flag = y.toString();
 	if (flag === y) {
-		if(i !== undefined) y = this.find(y)[i];
+		if (i !== undefined) y = this.find(y)[i];
 		else {
 			y = this.find(y);
-			x = this.find(x,y);
+			x = this.find(x, y);
 			return x;
 		}
-	}
-	else if (flag === "[object HTMLCollection]") {
+	} else if (flag === "[object HTMLCollection]") {
 		if (i !== undefined) y = y[i];
 		else {
 			if (y.length) {
 				const HTMLCollectionArray = [];
-				for (let i = 0;i < y.length;i++) { // 这种循环写法，运行时间相对更稳定，平均用时更短，性能较好
+				for (let i = 0; i < y.length; i++) { // 这种循环写法，运行时间相对更稳定，平均用时更短，性能较好
 					// if (!y[i].nodeType) continue; //如果用for-in写的话，HTMLCollection的length会被枚举，同理NodeList也一样。
 					// for-of不会枚举length
-					HTMLCollectionArray[i] = this.find(x,y[i]);
+					HTMLCollectionArray[i] = this.find(x, y[i]);
 				}
 				return HTMLCollectionArray;
-			}
-			else throw new Error("The target node has no parentNode.");
+			} else throw new Error("The target node has no parentNode.");
 		}
-	}
-	else if (flag === "[object NodeList]") {
+	} else if (flag === "[object NodeList]") {
 		if (i !== undefined) y = y[i];
 		else {
 			if (y.length) {
 				const NodeListArray = [];
-				for (let i = 0;i < y.length;i++) {
-					NodeListArray[i] = this.find(x,y[i])
+				for (let i = 0; i < y.length; i++) {
+					NodeListArray[i] = this.find(x, y[i])
 				}
 				return NodeListArray;
-			}
-			else throw new Error("The target node has no parentNode.");
+			} else throw new Error("The target node has no parentNode.");
 		}
 	}
 
-	x.replace(/([#.]?)(.+)/,($0,$1,$2)=>{
-		switch($1){
+	x.replace(/([#.]?)(.+)/, ($0, $1, $2) => {
+		switch ($1) {
 			case "#":
 				x = y.querySelector($0);
-			break;
+				break;
 			case ".":
 				x = y.getElementsByClassName($2);
-			break;
+				break;
 			default:
 				x = y.getElementsByTagName($2).length ? y.getElementsByTagName($2) : document.getElementsByName($2);
 		}
@@ -231,37 +223,40 @@ function find(x,y = document,i) {
 // 5）优化了书写结构
 
 function find(x, y = document, a, b) { // x為目標，y為目標查找的祖先節點，a為y的索引，b為x的索引
-	// 判断x书否已经为节点
+	// 判断x
 	if (/^\[object (HTMLCollection|NodeList|HTML.+Element)\]$/.test(x.toString())) return x;
-	// 判断x是否为字符串
-	if (typeof x !== "string") throw new Error(`Parameter ${x} should be Dom or String`);
-	// 判断y是否为字符串
-	if (typeof y === "string") {
-		if (typeof a === "number") y = this.find(y)[a];
-		else y = this.find(y); // 可能為節點集合，也可能為單個節點
-	}
-	// 判断y是否为节点
-	else {
-		if (/[object (HTMLCollection|NodeList|HTML.+Element)]/.test(y.toString())) y = y; // 可能為節點集合，也可能為單個節點
-		else throw new Error(`Parameter ${y} should be DOM or String`);
-	}
+	if (typeof x !== "string") throw new Error(`The parameter ${x} must be DOM or String`);
 
-	// 判斷y是否為節點集合，此處不需要參數a，因為能進判斷的都是節點集合，必然沒a
-	const flag = y.toString(); // getElementsByClassName、getElementsByTagName返回HTMLCollection；querySelectorAll、getElementsByName返回NodeList
-	if (flag === "[object HTMLCollection]") { // switch不能return打斷函數執行
-		if (!y.length) throw new Error(`Parameter ${y} should be DOM or String`);
-		const HTMLCollectionArray = [];
-		for (let i = 0; i < y.length; i++) {
-			HTMLCollectionArray[i] = this.find(x, y[i], "", b);
-		}
-		return HTMLCollectionArray;
-	} else if (flag === "[object NodeList]") {
-		if (!y.length) throw new Error(`Parameter ${y} should be DOM or String`);
-		const NodeListArray = [];
-		for (let i = 0; i < y.length; i++) {
-			NodeListArray[i] = this.find(x, y[i], "", b);
-		}
-		return NodeListArray;
+	// 判断y
+	if (typeof y === "string") y = this.find(y);
+
+	const flag = y.toString();
+	if (/^\[object HTMLCollection\]$/.test(flag)) {
+		if (y.length) {
+			if (a) y = y[a];
+			else {
+				const HTMLCollectionArray = [];
+				for (let i = 0; i < y.length; i++) {
+					HTMLCollectionArray[i] = this.find(x, y[i], a, b);
+				}
+				return HTMLCollectionArray;
+			}
+		} else throw new Error(`Invalid parameter ${y}`);
+	} else if (/^\[object NodeList\]$/.test(flag)) {
+		if (y.length) {
+			if (a) y = y[a];
+			else {
+				const NodeListArray = [];
+				for (let i = 0; i < y.length; i++) {
+					NodeListArray[i] = this.find(x, y[i], a, b);
+				}
+				return NodeListArray;
+			}
+		} else throw new Error(`Invalid parameter ${y}`);
+	} else if (/^\[object HTML(.+)\]$/.test(flag)) {
+		if (RegExp.$1 !== "Document" && a) throw new Error(`Error index: the length of parameter ${y} is 1.`)
+	} else {
+		throw new Error(`Invalid parameter ${y}`);
 	}
 
 	x.replace(/([.#])?(.+)/, ($0, $1, $2) => {
@@ -273,8 +268,8 @@ function find(x, y = document, a, b) { // x為目標，y為目標查找的祖先
 				x = typeof b === "number" ? y.getElementsByClassName($2)[b] : y.getElementsByClassName($2);
 				break;
 			default:
-				x = y.getElementsByTagName($2).length ? typeof b === "number" ? y.getElementsByTagName($2)[b] : y.getElementsByTagName(
-					$2) : typeof b === "number" ? document.getElementsByName($2)[b] : document.getElementsByName($2); // getElmentsByName只能用document前缀
+				x = y.getElementsByTagName($2).length ? (typeof b === "number" ? y.getElementsByTagName($2)[b] : y.getElementsByTagName(
+					$2)) : (typeof b === "number" ? document.getElementsByName($2)[b] : document.getElementsByName($2));
 		}
 	})
 
