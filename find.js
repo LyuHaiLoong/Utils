@@ -127,7 +127,7 @@ function find(x, y = document, i) {
 }
 */
 
-// version 1.3
+// version 1.3.1
 //**********更新内容**********
 // 1）增加对参数x的判断，通过输入数组形式的参数x，支持在同一y节点下查找不同x，或在不同y下查找不同x，或在不同y下查找同一x
 
@@ -215,7 +215,66 @@ function find(x,y = document,i) {
 				x = y.getElementsByClassName($2);
 			break;
 			default:
-				x = y.getElementsByTagName($2).length ? y.getElementsByTagName($2) : y.getElementsByName($2);
+				x = y.getElementsByTagName($2).length ? y.getElementsByTagName($2) : document.getElementsByName($2);
+		}
+	})
+
+	return x;
+}
+
+// version 1.3.2
+//**********更新内容**********
+// 1）作为1.3.1的简化版，取消了对x、y的数组判断，在书写逻辑时对结构调整更便捷。
+// 2）增加了可选参数b，b为最终结果的索引值。在于其他方法联调时，数组形式的传参更友好
+// 3）修正getElementsByName的书写错误，getElementsByName前缀只能为document
+// 4）对报错处理作出优化，指向更明确
+// 5）优化了书写结构
+
+function find(x, y = document, a, b) { // x為目標，y為目標查找的祖先節點，a為y的索引，b為x的索引
+	// 判断x书否已经为节点
+	if (/^\[object (HTMLCollection|NodeList|HTML.+Element)\]$/.test(x.toString())) return x;
+	// 判断x是否为字符串
+	if (typeof x !== "string") throw new Error(`Parameter ${x} should be Dom or String`);
+	// 判断y是否为字符串
+	if (typeof y === "string") {
+		if (typeof a === "number") y = this.find(y)[a];
+		else y = this.find(y); // 可能為節點集合，也可能為單個節點
+	}
+	// 判断y是否为节点
+	else {
+		if (/[object (HTMLCollection|NodeList|HTML.+Element)]/.test(y.toString())) y = y; // 可能為節點集合，也可能為單個節點
+		else throw new Error(`Parameter ${y} should be DOM or String`);
+	}
+
+	// 判斷y是否為節點集合，此處不需要參數a，因為能進判斷的都是節點集合，必然沒a
+	const flag = y.toString(); // getElementsByClassName、getElementsByTagName返回HTMLCollection；querySelectorAll、getElementsByName返回NodeList
+	if (flag === "[object HTMLCollection]") { // switch不能return打斷函數執行
+		if (!y.length) throw new Error(`Parameter ${y} should be DOM or String`);
+		const HTMLCollectionArray = [];
+		for (let i = 0; i < y.length; i++) {
+			HTMLCollectionArray[i] = this.find(x, y[i], "", b);
+		}
+		return HTMLCollectionArray;
+	} else if (flag === "[object NodeList]") {
+		if (!y.length) throw new Error(`Parameter ${y} should be DOM or String`);
+		const NodeListArray = [];
+		for (let i = 0; i < y.length; i++) {
+			NodeListArray[i] = this.find(x, y[i], "", b);
+		}
+		return NodeListArray;
+	}
+
+	x.replace(/([.#])?(.+)/, ($0, $1, $2) => {
+		switch ($1) {
+			case "#":
+				x = y.querySelector($0);
+				break;
+			case ".":
+				x = typeof b === "number" ? y.getElementsByClassName($2)[b] : y.getElementsByClassName($2);
+				break;
+			default:
+				x = y.getElementsByTagName($2).length ? typeof b === "number" ? y.getElementsByTagName($2)[b] : y.getElementsByTagName(
+					$2) : typeof b === "number" ? document.getElementsByName($2)[b] : document.getElementsByName($2); // getElmentsByName只能用document前缀
 		}
 	})
 
