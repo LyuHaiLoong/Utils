@@ -224,7 +224,7 @@ function find(x, y = document, i) {
 
 function find(x, y = document, a, b) { // x為目標，y為目標查找的祖先節點，a為y的索引，b為x的索引
 	// 判断x
-	if (/^\[object (HTMLCollection|NodeList|HTML.+Element)\]$/.test(x.toString())) return x;
+	if (/^\[object (HTML.+|NodeList)\]$/.test(x.toString())) return x;
 	if (typeof x !== "string") throw new Error(`The parameter ${x} must be DOM or String`);
 
 	// 判断y
