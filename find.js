@@ -275,3 +275,32 @@ function find(x, y = document, a, b) { // x為目標，y為目標查找的祖先
 
 	return x;
 }
+// version 1.3.3
+//**********更新内容**********
+// 最简单常用的版本
+// 搭配了isDOM函数，可以自行修改
+// 搭配了error函数进行报错，可自行修改
+
+function find(dom, parent = document) {
+	// 判断dom参数
+	if (isDOM(dom) === "DOM") return dom;
+	if (isDOM(dom) !== "string") error("String");
+	// 判断parent参数
+	if (isDOM(parent) === "string") parent = find(parent);
+	if (isDOM(parent) !== "DOM") error("DOM");
+	// 查找dom
+	dom.replace(/([.#]?)(.+)/, function ($0, $1, $2) {
+		switch ($1) {
+			case "#":
+				dom = parent.querySelector($0);
+				break;
+			case ".":
+				dom = parent.getElementsByClassName($2);
+				break;
+			default:
+				dom = parent.getElementsByTagName($2);
+		}
+	});
+	// 返回结果
+	return dom;
+}

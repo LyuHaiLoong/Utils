@@ -9,18 +9,18 @@
 // 提示
 // 附带部分ES6新特性，如果在低版本浏览器中使用，请自行更改;（新版本才是王道！）
 function changeStyle(ele, attr, val = "", boolean) {
-  if (ele instanceof Array) ele = this.find(...ele);
-  else ele = this.find(ele);
+  if (ele instanceof Array) find(...ele);
+  else ele = find(ele);
 
   if (ele.nodeType) {
     if (attr instanceof Array) {
       if (val instanceof Array) {
         for (let i = 0; i < attr.length; i++) {
-          this.changeStyle(ele, attr[i], val[i], boolean);
+          changeStyle(ele, attr[i], val[i], boolean);
         }
       } else {
         for (let v of attr) {
-          this.changeStyle(ele, v, val, boolean);
+          changeStyle(ele, v, val, boolean);
         }
       }
     } else {
@@ -52,7 +52,7 @@ function changeStyle(ele, attr, val = "", boolean) {
     }
   } else {
     for (let v of ele) {
-      this.changeStyle(v, attr, val, boolean);
+      changeStyle(v, attr, val, boolean);
     }
   }
 }
