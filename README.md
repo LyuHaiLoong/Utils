@@ -29,6 +29,7 @@
 > ### [find](https://github.com/LyuHaiLoong/Utils/blob/master/find.js)
 - DOM节点查找方法
 - 支持ID、calssName、tagName、name查找
+- 添加多个版本，譬如恶心版、极端情况版、常用版……
 
 > ### [renderTree](https://github.com/LyuHaiLoong/Utils/blob/master/renderTree.js)
 - 无限极菜单树生成方法
@@ -39,3 +40,16 @@
 - 与find.js关联，可自行修改
 - 支持多节点、多属性同时赋值
 - 支持直接赋值或在当前值基础上叠加
+
+> ### [isDOM](https://github.com/LyuHaiLoong/Utils/blob/master/isDOM.js)
+- 判断参数是否为DOM节点
+
+> ### [error](https://github.com/LyuHaiLoong/Utils/blob/master/error.js)
+- 报错控制
+- 根据需要自行修改
+
+> ### [innerHTML](https://github.com/LyuHaiLoong/Utils/blob/master/innerHTML.js)
+- 获取或修改节点的innerHTML
+- 与find、isDOM、error关联
+- 支持多节点获取或修改
+- 支持查找匹配，然后获取或修改
