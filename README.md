@@ -53,3 +53,7 @@
 - 与find、isDOM、error关联
 - 支持多节点获取或修改
 - 支持查找匹配，然后获取或修改
+
+> ### [isEqual](https://github.com/LyuHaiLoong/Utils/blob/master/isEqual.js)
+- 根据目标key值，判断[{},{}...]格式下的新、旧两组数据是否完全相等
+- 作用后结果包含——两组数据的相互不重复项、更新后的新数据、含有删除及添加项的对象
